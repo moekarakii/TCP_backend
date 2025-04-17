@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  api:
+    build: .
+    ports:
+      - '5000:5000'
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      - DB_NAME=ptcpokemon
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_HOST=db
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: ptcpokemon
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - dbdata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  dbdata:
