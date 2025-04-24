@@ -7,9 +7,9 @@ app.use(cors());
 app.use(express.json());
 
 // Routes (to be implemented later)
-app.use('/collectors', require('./routes/collectorRoutes'));
-app.use('/trade', require('./routes/tradeRoutes'));
-app.use('/showcase', require('./routes/showcaseRoutes'));
+// app.use('/collectors', require('./routes/collectorRoutes'));
+// app.use('/trade', require('./routes/tradeRoutes'));
+// app.use('/showcase', require('./routes/showcaseRoutes'));
 
 app.get('/', (req, res) => res.send('PTCPokemon API Running'));
 
