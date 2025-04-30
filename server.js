@@ -1,3 +1,21 @@
+const express = require('express');
+const axios = require('axios');
+const router = express.Router();
+
+router.get('/:name', async (req, res) => {
+  const { name } = req.params;
+
+  try {
+    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`);
+    res.json(response.data);
+  } catch (error) {
+    console.error('PokéAPI fetch error:', error.message);
+    res.status(500).json({ error: 'Failed to fetch Pokémon data' });
+  }
+});
+
+module.exports = router;
+
 require('dotenv').config();
 console.log("ENV VARS:", {
   DB_HOST: process.env.DB_HOST,
