@@ -6,7 +6,12 @@ const app = express();
 const pokemonRoutes = require('./routes/pokemon');
 const searchRoutes = require('./routes/search');
 
-app.use(cors());
+// ✅ CORS fix — allow frontend origin
+app.use(cors({
+  origin: ['http://localhost:8081'], // Add production URL here too when known
+  credentials: true // Optional, if using cookies/auth headers
+}));
+
 app.use(express.json());
 
 app.use('/api/pokemon', pokemonRoutes);
