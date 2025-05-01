@@ -2,7 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const router = express.Router();
 // GET /api/pokemon/search?name=Pikachu&rarity=Rare Holo
-router.get('/search', async (req, res) => {
+router.get('/', async (req, res) => {
   const { name, rarity } = req.query;
 
   if (!name) {
@@ -24,9 +24,11 @@ router.get('/search', async (req, res) => {
       return res.status(404).json({ message: 'No cards found for this query.' });
     }
 
-    res.json(response.data.data.slice(0, 8)); // Limit to top 8 results
+    res.json(response.data.data.slice(0, 1)); // Limit to top 8 results
   } catch (error) {
     console.error('Pokémon TCG API error:', error.message);
     res.status(500).json({ error: 'Failed to fetch card data' });
   }
 });
+
+module.exports = router;
