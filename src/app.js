@@ -4,11 +4,13 @@ const { authenticateFirebaseToken } = require('./middleware/firebaseAuth');
 const app = express();
 
 const pokemonRoutes = require('./routes/pokemon');
+const searchRoutes = require('./routes/search');
 
 app.use(cors());
 app.use(express.json());
 
 app.use('/api/pokemon', pokemonRoutes);
+app.use('/api/search', searchRoutes);
 app.use('/api/protected', authenticateFirebaseToken);
 app.get('/api/test-auth', authenticateFirebaseToken, (req, res) => {
     res.status(200).json({ message: 'Firebase Auth Success', uid: req.user.uid });
