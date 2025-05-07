@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 const dbConfig = require('../../config/db.config');
 
 const sequelize = new Sequelize(
@@ -8,17 +8,44 @@ const sequelize = new Sequelize(
   {
     host: dbConfig.HOST,
     dialect: dbConfig.dialect,
-    retry: {
-      max: 5 // ✅ try reconnecting up to 5 times if initial connection fails
-    },
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000,
-    },
-    logging: console.log, // Optional: helpful during dev, turn off later
+    retry: { max: 5 },
+    pool: { max: 5, min: 0, acquire: 30000, idle: 10000 },
+    logging: console.log,
   }
 );
 
-module.exports = { sequelize };
+// Load models
+const User = require('./user')(sequelize, DataTypes);
+const Card = require('./card')(sequelize, DataTypes);
+const UserCard = require('./userCard')(sequelize, DataTypes);
+const Trade = require('./trade')(sequelize, DataTypes);
+
+// Associations
+// Associations
+User.belongsToMany(Card, {
+  through: UserCard,
+  foreignKey: 'userId',
+  otherKey: 'cardId',
+});
+Card.belongsToMany(User, {
+  through: UserCard,
+  foreignKey: 'cardId',
+  otherKey: 'userId',
+});
+
+User.hasMany(UserCard, {
+  foreignKey: 'userId',
+  sourceKey: 'uid',
+});
+UserCard.belongsTo(User, {
+  foreignKey: 'userId',
+  targetKey: 'uid',
+});
+
+Card.hasMany(UserCard, { foreignKey: 'cardId' });
+UserCard.belongsTo(Card, { foreignKey: 'cardId' });
+
+// Attach to db object
+const db = { sequelize, Sequelize, User, Card, UserCard, Trade };
+
+module.exports = db;
