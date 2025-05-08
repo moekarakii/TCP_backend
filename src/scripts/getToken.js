@@ -8,8 +8,8 @@ if (!getApps().length) {
   initializeApp(firebaseConfig);
 }
 
-const email = 'test2@gmail.com'; // <-- replace
-const password = 'test2account';      // <-- replace
+const email = 'test1@gmail.com'; // <-- replace
+const password = 'test1account';      // <-- replace
 
 const auth = getAuth();
 
