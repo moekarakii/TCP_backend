@@ -7,6 +7,7 @@ const pokemonRoutes = require('./routes/pokemon');
 const searchRoutes = require('./routes/search');
 const packRoutes = require('./routes/packs');
 const tradeRoutes = require('./routes/trades');
+const collectionRoutes = require('./routes/collection');
 
 // ✅ CORS fix — allow frontend origin
 app.use(cors({
@@ -20,6 +21,7 @@ app.use('/api/pokemon', pokemonRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/packs', packRoutes);
 app.use('/api/trades', tradeRoutes);
+app.use('/api/collection', collectionRoutes);
 // app.use('/api/protected', authenticateFirebaseToken);
 app.get('/api/test-auth', authenticateFirebaseToken, (req, res) => {
     res.status(200).json({ message: 'Firebase Auth Success', uid: req.user.uid });
