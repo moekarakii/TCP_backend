@@ -42,6 +42,11 @@ UserCard.belongsTo(User, {
   targetKey: 'uid',
 });
 
+// in Trade model or index.js association setup
+Trade.belongsTo(Card, { foreignKey: 'offeredCardId', as: 'offeredCard' });
+Trade.belongsTo(Card, { foreignKey: 'requestedCardId', as: 'requestedCard' });
+Trade.belongsTo(User, { foreignKey: 'offeringUserId', as: 'offeringUser' });
+
 Card.hasMany(UserCard, { foreignKey: 'cardId' });
 UserCard.belongsTo(Card, { foreignKey: 'cardId' });
 

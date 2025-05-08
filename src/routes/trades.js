@@ -1,6 +1,6 @@
 const express = require('express');
 const { Op } = require('sequelize'); // for OR condition
-const { Trade, UserCard } = require('../models');
+const { Trade, UserCard, Card, User } = require('../models');
 const { authenticateFirebaseToken } = require('../middleware/firebaseAuth');
 const router = express.Router();
 
@@ -53,6 +53,25 @@ router.post('/', authenticateFirebaseToken, async (req, res) => {
   } catch (err) {
     console.error('❌ Trade creation error:', err);
     res.status(500).json({ message: 'Failed to create trade.' });
+  }
+});
+
+// GET /api/trades/forum
+router.get('/forum', async (req, res) => {
+  try {
+    const trades = await Trade.findAll({
+      where: { status: 'pending' },
+      include: [
+        { model: Card, as: 'offeredCard' },
+        { model: Card, as: 'requestedCard' },
+        { model: User, as: 'offeringUser', attributes: ['uid', 'email'] },
+      ],
+    });
+
+    res.json(trades);
+  } catch (error) {
+    console.error('Error fetching public trades:', error);
+    res.status(500).json({ message: 'Failed to fetch trades' });
   }
 });
 

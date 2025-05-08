@@ -2,6 +2,8 @@ const express = require('express');
 const axios = require('axios');
 const router = express.Router();
 const { UserCard } = require('../models');
+const { Card } = require('../models');
+const { User } = require('../models');
 const { authenticateFirebaseToken } = require('../middleware/firebaseAuth');
 
 // Packs are here
@@ -16,6 +18,15 @@ router.get('/:packId', authenticateFirebaseToken, async (req, res) => {
   const { packId } = req.params;
   const config = PACK_CONFIG[packId];
   const userId = req.user.uid;
+
+  // Ensure user exists in Users table
+  await User.findOrCreate({
+    where: { uid: userId },
+    defaults: {
+      email: req.user.email || 'unknown@example.com',
+      displayName: req.user.name || null,
+    },
+  });
 
   if (!config) {
     return res.status(400).json({ error: 'Invalid pack ID. Choose 1, 2, or 3.' });
@@ -45,15 +56,31 @@ router.get('/:packId', authenticateFirebaseToken, async (req, res) => {
 
     // This is where the saving to user starts
     // Save each card to the UserCard table
-    await Promise.all(
-      selectedCards.map(async (card) => {
-        await UserCard.upsert({
+    for (const card of selectedCards) {
+      await Card.findOrCreate({
+        where: { id: card.id },
+        defaults: {
+          name: card.name,
+          rarity: card.rarity || 'Common',
+          imageUrl: card.images?.small || '',
+        },
+      });
+
+      const existing = await UserCard.findOne({
+        where: { userId, cardId: card.id },
+      });
+
+      if (existing) {
+        existing.quantity += 1;
+        await existing.save();
+      } else {
+        await UserCard.create({
           userId,
           cardId: card.id,
-          quantity: 1, // This should help with duplicates unless we were using this differently?
+          quantity: 1,
         });
-      })
-    );
+      }
+    }
 
     res.json(selectedCards);
   } catch (error) {
