@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const router = express.Router();
@@ -16,8 +17,8 @@ router.get('/:name', async (req, res) => {
 
 module.exports = router;
 
-require('dotenv').config();
 console.log("ENV VARS:", {
+  DB_NAME: process.env.DB_NAME,
   DB_HOST: process.env.DB_HOST,
   DB_USER: process.env.DB_USER,
   DB_PASSWORD: process.env.DB_PASSWORD,
@@ -42,6 +43,13 @@ console.log("Connecting to DB:", process.env.DB_HOST);
   try {
     await sequelize.authenticate();
     console.log('Database connected.');
+
+    await sequelize.sync();
+    console.log('Tables synced.');
+
+    const [tables] = await sequelize.query("SHOW TABLES;");
+    console.log('Tables in DB:', tables.map(t => Object.values(t)[0]));
+
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
