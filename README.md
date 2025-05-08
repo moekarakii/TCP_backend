@@ -1,6 +1,6 @@
-# TCP Backend – Pokémon Trading Card Platform
+# PackSwap – Pokémon Trading Card Platform
 
-This is the **backend API** for the Pokémon Trading Card Platform (PTC). It supports user authentication, pack opening, card collection management, and a real-time trading system.
+This is the **backend API** for the PackSwap: Pokémon Trading Card Platform (PTC). It supports user authentication, pack opening, card collection management, and a real-time trading system.
 
 🔗 Frontend Repo: [TCP Frontend](https://github.com/Jaden-B11/TCP_frontend)
 
@@ -78,4 +78,4 @@ Trading
 
 
 Created by Moe Karaki and team for CST 438 – Software Engineering
-© 2025 Pokémon Trading Card Platform
+© 2025 PackSwap
