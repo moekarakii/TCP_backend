@@ -53,40 +53,27 @@ npm run dev
 To test MySQL locally with Docker:
 docker-compose up
 
+---
 
-🧪 API Endpoints
+## 🧪 API Endpoints
 
 Auth
-	•	Protected routes require Authorization: Bearer <FirebaseToken>
+- Protected routes require Authorization: Bearer <FirebaseToken>
 
 Packs
-	•	GET /api/packs/:packId – Opens a pack (1 = Common, 2 = Uncommon, 3 = Rare)
+- GET /api/packs/:packId – Opens a pack (1 = Common, 2 = Uncommon, 3 = Rare)
 
 Collection
-	•	GET /api/collection – Returns full card info for the authenticated user’s collection
+- GET /api/collection – Returns full card info for the authenticated user’s collection
 
 Trading
-	•	POST /api/trades – Create a trade offer
-	•	PUT /api/trades/:id/accept – Accept a trade
-	•	DELETE /api/trades/:id – Cancel a trade
-	•	GET /api/trades/:userId – View user’s trade history
-	•	GET /api/trades/forum – View public trade forum
+- POST /api/trades – Create a trade offer
+- PUT /api/trades/:id/accept – Accept a trade
+- DELETE /api/trades/:id – Cancel a trade
+- GET /api/trades/:userId – View user’s trade history
+- GET /api/trades/forum – View public trade forum
 
-📷 Sample Trade Payload
-{
-  "receivingUserId": "abc123",
-  "offeredCardId": "swsh1-10",
-  "requestedCardId": "swsh1-16"
-}
-
-📚 Project Structure
-src/
-├── routes/       # Express routes
-├── models/       # Sequelize models
-├── middleware/   # Auth middleware
-├── config/       # Sequelize & Firebase config
-└── server.js     # Entry point
-
+---
 
 
 
